@@ -29,58 +29,46 @@ import java.util.Properties;
  */
 public class FreemarkerWrapper {
 
-    static class FreemarkerRequest {
+    public static class FreemarkerRequest {
 
         private Writer out;
         private Object dataModel;
         private String templateName;
 
-        public Writer getOut() {
-            return out;
-        }
+        public static class Builder {
 
-        public Object getDataModel() {
-            return dataModel;
-        }
+            private final FreemarkerRequest freemarkerRequest = new FreemarkerRequest();
 
-        public String getTemplateName() {
-            return templateName;
-        }
-
-        static class Builder {
-
-            FreemarkerRequest freemarkerRequest = new FreemarkerRequest();
-
-            Builder out(Writer w) {
+            public Builder out(Writer w) {
                 this.freemarkerRequest.out = w;
                 return this;
             }
 
-            Builder dataModel(Properties dm) {
+            public Builder dataModel(Properties dm) {
                 this.freemarkerRequest.dataModel = dm;
                 return this;
             }
 
-            Builder dataModel(Map<String, String> dm) {
+            public Builder dataModel(Map<String, String> dm) {
                 this.freemarkerRequest.dataModel = dm;
                 return this;
             }
 
-            Builder templateName(String templateName) {
+            public Builder templateName(String templateName) {
                 this.freemarkerRequest.templateName = templateName;
                 return this;
             }
 
-            FreemarkerRequest build() {
+            public FreemarkerRequest build() {
                 return this.freemarkerRequest;
             }
         }
     }
 
-    static class FreemarkerResponse {
+    public static class FreemarkerResponse {
     }
 
-    static class FreemarkerMerger {
+    public static class FreemarkerMerger {
 
         private final Configuration configuration;
 

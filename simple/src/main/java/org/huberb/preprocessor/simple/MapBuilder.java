@@ -9,16 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Simple builder for creating Map with keys in the form like "${" + key +"}".
+ * The begin-("${"), and end-marker ("}") is configurable,
+ * using delimiter( "${", "}"), or delimiter( "${*}").
+ * 
  * @author berni3
  */
 public class MapBuilder {
 
     private final Map<String, String> m = new HashMap<>();
-    private String delimiter = "${*}";
+    private final char beginEndMarkerDelimiterStar = '*';
+    private String delimiter = "${" + beginEndMarkerDelimiterStar + "}";
 
     public MapBuilder delimiter(String b, String e) {
-        this.delimiter = b + "*" + e;
+        this.delimiter = b + beginEndMarkerDelimiterStar + e;
         return this;
     }
 
@@ -33,8 +37,8 @@ public class MapBuilder {
     }
 
     public Map<String, String> build() {
-        String[] beginEndMarker = calcBeginEndMarker(this.delimiter);
-        Map<String, String> result = new HashMap<>();
+        final String[] beginEndMarker = calcBeginEndMarker(this.delimiter);
+        final Map<String, String> result = new HashMap<>();
         m.entrySet().stream().forEach((Map.Entry<String, String> t) -> {
             final String delimitedKey = beginEndMarker[0] + t.getKey() + beginEndMarker[1];
             result.put(delimitedKey, t.getValue());
@@ -43,15 +47,15 @@ public class MapBuilder {
     }
 
     String[] calcBeginEndMarker(String delimiter) {
-        final String[] beginEndMarker;
-        int index = delimiter.indexOf('*');
+        final String[] beginEndMarkers;
+        final int index = delimiter.indexOf("" + beginEndMarkerDelimiterStar);
         if (index == -1) {
-            beginEndMarker = new String[]{delimiter, delimiter};
+            beginEndMarkers = new String[]{delimiter, delimiter};
         } else {
-            String beginMarker = delimiter.substring(0, index);
-            String endMarker = delimiter.substring(index + 1, delimiter.length());
-            beginEndMarker = new String[]{beginMarker, endMarker};
+            final String beginMarker = delimiter.substring(0, index);
+            final String endMarker = delimiter.substring(index + 1, delimiter.length());
+            beginEndMarkers = new String[]{beginMarker, endMarker};
         }
-        return beginEndMarker;
+        return beginEndMarkers;
     }
 }

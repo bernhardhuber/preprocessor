@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -30,13 +29,13 @@ import java.util.Map.Entry;
  */
 public class SimpleWrapper {
 
-    static class Request {
+    public static class Request {
 
         private Map<String, String> map;
         private Reader r;
         private Writer w;
 
-        static class Builder {
+        public static class Builder {
 
             private final Request request;
 
@@ -71,10 +70,10 @@ public class SimpleWrapper {
         }
     }
 
-    static class Response {
+    public static class Response {
     }
 
-    static class SimpleMerger {
+    public static class SimpleMerger {
 
         public void merge(Request req, Response res) throws IOException {
             try (Writer w = req.w) {

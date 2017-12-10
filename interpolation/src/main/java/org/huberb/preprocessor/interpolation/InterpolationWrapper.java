@@ -5,7 +5,6 @@
  */
 package org.huberb.preprocessor.interpolation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -23,37 +22,37 @@ import org.codehaus.plexus.interpolation.StringSearchInterpolator;
  */
 public class InterpolationWrapper {
 
-    static class Request {
+    public static class Request {
 
-        Reader in;
-        Writer out;
-        AbstractValueSource dataModel;
+        private Reader in;
+        private Writer out;
+        private AbstractValueSource dataModel;
 
-        static class Builder {
+        public static class Builder {
 
             private final Request request = new Request();
 
-            Builder reader(Reader in) {
+            public Builder reader(Reader in) {
                 this.request.in = in;
                 return this;
             }
 
-            Builder writer(Writer out) {
+            public Builder writer(Writer out) {
                 this.request.out = out;
                 return this;
             }
 
-            Builder dataModel(Map<String, String> m) {
+            public Builder dataModel(Map<String, String> m) {
                 request.dataModel = new MapBasedValueSource(m);
                 return this;
             }
 
-            Builder dataModel(Properties props) {
+            public Builder dataModel(Properties props) {
                 request.dataModel = new PropertiesBasedValueSource(props);
                 return this;
             }
 
-            Request build() {
+            public Request build() {
                 return request;
             }
         }
@@ -74,7 +73,6 @@ public class InterpolationWrapper {
                 try (Writer out = request.out) {
                     writeFromTo(r, out);
                 }
-
             }
 
         }
