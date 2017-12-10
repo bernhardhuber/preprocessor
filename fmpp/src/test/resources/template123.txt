@@ -1,0 +1,5 @@
+Template123
+
+prop1-value is ${prop1}
+prop2-value is ${prop2}
+prop3-value is ${prop3}
