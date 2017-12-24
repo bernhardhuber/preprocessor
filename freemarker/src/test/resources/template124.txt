@@ -1,5 +1,0 @@
-Template12
-
-prop1-value is ${prop1}
-prop2-value is ${prop2}
-prop4-value is not defined ${prop4}

@@ -7,14 +7,14 @@ package org.huberb.preprocessor.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
+import org.huberb.preprocessor.testdata.PropertiesFromResourceName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,14 +39,7 @@ public class FreemarkerWrapperTest {
 
     @Test
     public void testFreemarkerMergerProperties() throws IOException, TemplateException {
-        Properties properties = new Properties();
-        properties.load(
-                new BufferedReader(
-                        new FileReader(
-                                new File("target/test-classes/newproperties.properties")
-                        )
-                )
-        );
+        Properties properties = new PropertiesFromResourceName().apply("newproperties.properties");
 
         StringWriter sw = new StringWriter();
         FreemarkerWrapper.FreemarkerRequest.Builder b = new FreemarkerWrapper.FreemarkerRequest.Builder();
@@ -54,7 +47,7 @@ public class FreemarkerWrapperTest {
         FreemarkerWrapper.FreemarkerResponse fmResp = new FreemarkerWrapper.FreemarkerResponse();
 
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_21);
-        configuration.setDirectoryForTemplateLoading(new File("target/test-classes"));
+        configuration.setClassLoaderForTemplateLoading(this.getClass().getClassLoader(), "/");
         FreemarkerWrapper.FreemarkerMerger fmMerger = new FreemarkerWrapper.FreemarkerMerger(configuration);
         fmMerger.process(fmReq, fmResp);
 
@@ -84,7 +77,7 @@ public class FreemarkerWrapperTest {
 
         FreemarkerWrapper.FreemarkerResponse fmResp = new FreemarkerWrapper.FreemarkerResponse();
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_21);
-        configuration.setDirectoryForTemplateLoading(new File("target/test-classes"));
+        configuration.setClassLoaderForTemplateLoading(this.getClass().getClassLoader(), "/");
         FreemarkerWrapper.FreemarkerMerger fmMerger = new FreemarkerWrapper.FreemarkerMerger(configuration);
         fmMerger.process(fmReq, fmResp);
 

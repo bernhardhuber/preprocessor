@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.huberb.preprocessor.fmpp.Main.FmppSingleInputOutputBuilder;
+import org.huberb.preprocessor.testdata.FileFromResourceName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +47,8 @@ public class MainTest {
     @Test
     public void testMain() throws IOException {
         FmppSingleInputOutputBuilder fmppSingleInputOutputBuilder = new FmppSingleInputOutputBuilder();
-        fmppSingleInputOutputBuilder.inputFile = new File("target/test-classes/template123.txt");
-        fmppSingleInputOutputBuilder.propFile = new File("target/test-classes/newproperties.properties");
+        fmppSingleInputOutputBuilder.inputFile = new FileFromResourceName().apply("template123.txt");
+        fmppSingleInputOutputBuilder.propFile = new FileFromResourceName().apply("newproperties.properties");
         fmppSingleInputOutputBuilder.outputFile = new File("target/_template123.txt");
         List<String> argList = fmppSingleInputOutputBuilder.build();
         String[] args = argList.toArray(new String[argList.size()]);
