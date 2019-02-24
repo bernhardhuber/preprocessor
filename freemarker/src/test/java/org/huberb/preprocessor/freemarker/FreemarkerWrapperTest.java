@@ -8,12 +8,10 @@ package org.huberb.preprocessor.freemarker;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.Function;
 import org.huberb.preprocessor.testdata.PropertiesFromResourceName;
 import org.junit.After;
 import org.junit.Before;
@@ -52,14 +50,9 @@ public class FreemarkerWrapperTest {
         fmMerger.process(fmReq, fmResp);
 
         String expected = ""
-                + "Template123" + System.lineSeparator()
-                + "" + System.lineSeparator()
-                + "prop1-value is value1" + System.lineSeparator()
-                + "prop2-value is value2" + System.lineSeparator()
-                + "prop3-value is value3" + System.lineSeparator();
-        expected = expected.trim().replaceAll("\r\n", "@");
+                + "Template123@@prop1-value is value1@prop2-value is value2@prop3-value is value3";
 
-        String result = sw.toString().trim().replaceAll("[\r\n]", "@");
+        String result = normalizeMultiLine(sw.toString());
         assertEquals(expected, result);
     }
 
@@ -82,14 +75,16 @@ public class FreemarkerWrapperTest {
         fmMerger.process(fmReq, fmResp);
 
         String expected = ""
-                + "Template123" + System.lineSeparator()
-                + "" + System.lineSeparator()
-                + "prop1-value is value1" + System.lineSeparator()
-                + "prop2-value is value2" + System.lineSeparator()
-                + "prop3-value is value3" + System.lineSeparator();
-        expected = expected.trim().replaceAll("\r\n", "@");
+                + "Template123@@prop1-value is value1@prop2-value is value2@prop3-value is value3";
 
-        String result = sw.toString().trim().replaceAll("[\r\n]", "@");
+        String result = normalizeMultiLine(sw.toString());
         assertEquals(expected, result);
+    }
+
+    String normalizeMultiLine(String s) {
+        String x = s.trim();
+        x = x.replace("\r", "");
+        x = x.replace('\n', '@');
+        return x;
     }
 }
