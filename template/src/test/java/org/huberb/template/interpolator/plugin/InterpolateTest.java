@@ -65,9 +65,9 @@ public class InterpolateTest {
     public void testMerge() throws IOException, Interpolate.InterpolateException {
         Interpolate instance = new Interpolate();
 
-        File infile = folder.newFile("merg_infile");
+        File infile = folder.newFile("merge_infile");
         createFileContent(infile, "Hello, {{a}}");
-        File outfile = new File(folder.getRoot(), "merg_outfile");
+        File outfile = new File(folder.getRoot(), "merge_outfile");
         //---
         instance.addKeyValue("a", "aValue");
         instance.merge(infile, outfile);
@@ -77,19 +77,49 @@ public class InterpolateTest {
     }
 
     @Test
-    public void testMerge_varyToken() throws IOException, Interpolate.InterpolateException {
+    public void testMerge_varyToken_dollarlbrace_rbrace() throws IOException, Interpolate.InterpolateException {
         Interpolate instance = new Interpolate();
 
-        File infile = folder.newFile("merg_infile");
+        File infile = folder.newFile("merge_infile");
         createFileContent(infile, "Hello, ${a}");
-        File outfile = new File(folder.getRoot(), "merg_outfile");
+        File outfile = new File(folder.getRoot(), "merge_outfile");
         //--
         instance.beginTokenEndToken("${", "}");
-        instance.addKeyValue("a", "aValue");
+        instance.addKeyValue("a", "aValue2");
         instance.merge(infile, outfile);
 
         String merged = retrieveFileContent(outfile);
-        assertEquals("Hello, aValue", merged);
+        assertEquals("Hello, aValue2", merged);
+    }
+    @Test
+    public void testMerge_varyToken_hash_lrbracket_rbracket() throws IOException, Interpolate.InterpolateException {
+        Interpolate instance = new Interpolate();
+
+        File infile = folder.newFile("merge_infile");
+        createFileContent(infile, "Hello, #[a]");
+        File outfile = new File(folder.getRoot(), "merge_outfile");
+        //--
+        instance.beginTokenEndToken("#[", "]");
+        instance.addKeyValue("a", "#[aValue2]");
+        instance.merge(infile, outfile);
+
+        String merged = retrieveFileContent(outfile);
+        assertEquals("Hello, #[aValue2]", merged);
+    }
+    @Test
+    public void testMerge_varyToken_Ampersand_Ampersand() throws IOException, Interpolate.InterpolateException {
+        Interpolate instance = new Interpolate();
+
+        File infile = folder.newFile("merge_infile");
+        createFileContent(infile, "Hello, @a@");
+        File outfile = new File(folder.getRoot(), "merge_outfile");
+        //--
+        instance.beginTokenEndToken("@", "@");
+        instance.addKeyValue("a", "a@Value@3");
+        instance.merge(infile, outfile);
+
+        String merged = retrieveFileContent(outfile);
+        assertEquals("Hello, a@Value@3", merged);
     }
 
 }

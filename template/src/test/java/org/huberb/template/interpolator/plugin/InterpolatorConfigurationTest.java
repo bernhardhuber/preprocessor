@@ -15,8 +15,7 @@
  */
 package org.huberb.template.interpolator.plugin;
 
-import java.util.Map;
-import org.apache.maven.model.FileSet;
+import java.io.File;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,23 +39,38 @@ public class InterpolatorConfigurationTest {
     }
 
     /**
-     * Test of getTemplateFileSet method, of class InterpolatorConfiguration.
+     * Test of validate method, of class InterpolatorConfiguration.
      */
     @Test
-    public void testGetTemplateFileSet() {
+    public void testValidate() throws InterpolatorConfiguration.ConfigurationException {
         InterpolatorConfiguration instance = new InterpolatorConfiguration();
-        FileSet result = instance.getTemplateFileSet();
-        assertNotNull(result);
+        instance.baseDir(new File(".")).
+                beginToken("{(").
+                endToken(")}").
+                removeExtension(".mm");
+        instance.validate();
     }
 
     /**
-     * Test of getPropertyMap method, of class InterpolatorConfiguration.
+     * Test of getBeginToken method, of class InterpolatorConfiguration.
      */
     @Test
-    public void testGetPropertyMap() {
+    public void testGetter() {
         InterpolatorConfiguration instance = new InterpolatorConfiguration();
-        Map<String, String> result = instance.getPropertyMap();
-        assertNotNull(result);
+        instance.baseDir(new File(".")).
+                beginToken("((").
+                endToken("))").
+                removeExtension(".mm").
+                includesExcludes("*.inc", "*.exc").
+                property("a", "aValue");
+
+        assertEquals("((", instance.getBeginToken());
+        assertEquals("))", instance.getEndToken());
+        assertEquals("aValue", instance.getPropertyMap().get("a"));
+        assertEquals(".mm", instance.getRemoveExtension());
+        assertEquals("*.exc", instance.getTemplateFileSet().getExcludes().get(0));
+        assertEquals("*.inc", instance.getTemplateFileSet().getIncludes().get(0));
+        assertEquals(new File(".").getAbsolutePath(), instance.getTemplateFileSet().getDirectory());
     }
 
 }
