@@ -1,0 +1,10 @@
+/template/target/
+/testdata/target/
+/fmpp/target/
+/simple/target/
+/freemarker/target/
+/interpolation/target/
+/template/nbproject/
+/interpolator-maven-plugin/nbproject/
+/interpolator-maven-plugin/target/
+/handlebars-maven-plugin/target/
