@@ -15,8 +15,8 @@
  */
 package org.huberb.template.interpolator.plugin;
 
-import org.huberb.template.support.FileScanner;
-import org.huberb.template.support.FileCalculator;
+import org.huberb.template.interpolator.support.FileScanner;
+import org.huberb.template.interpolator.support.FileCalculator;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -28,7 +28,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
 import org.huberb.template.interpolator.plugin.Interpolate.InterpolateException;
-import org.huberb.template.support.FileCalculator.InputFileOutputFilePair;
+import org.huberb.template.interpolator.support.FileCalculator.InputFileOutputFilePair;
 
 /**
  *
@@ -101,12 +101,12 @@ public class InterpolatorMojo extends AbstractMojo {
         logConfiguration(configuration);
 
         //---
-        List<File> inputFiles = new FileScanner().setUpByFileSet(configuration.getTemplateFileSet()).scan();
+        final List<File> inputFiles = new FileScanner().setUpByFileSet(configuration.getTemplateFileSet()).scan();
         this.getLog().debug("inputFiles " + inputFiles);
 
         //---
-        FileCalculator fileCalculator = new FileCalculator();
-        List<InputFileOutputFilePair> ifofpList = fileCalculator.calculateFromInputFiles(
+        final FileCalculator fileCalculator = new FileCalculator();
+        final List<InputFileOutputFilePair> ifofpList = fileCalculator.calculateFromInputFiles(
                 configuration.getRemoveExtension(),
                 inputFiles);
         this.getLog().debug("inputFileOutputFilePair " + ifofpList);

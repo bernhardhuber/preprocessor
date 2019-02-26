@@ -15,13 +15,13 @@
  */
 package org.huberb.template.interpolator.plugin;
 
-import com.github.jknack.handlebars.internal.lang3.StringUtils;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.plugin.testing.WithoutMojo;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class InterpolatorMojoTest {
 
     String replaceLineEndingBySpace(String s) {
         String r = StringUtils.trim(s);
-        r = StringUtils.remove(r, '\r');
+        r = StringUtils.replace(r, "\r", "");
         r = StringUtils.replace(r, "\n", " ");
         return r;
     }

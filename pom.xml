@@ -11,7 +11,8 @@
         <module>freemarker</module>
         <module>interpolation</module>
         <module>testdata</module>
-        <module>template</module>
+        <module>interpolator-maven-plugin</module>
+        <module>handlebars-maven-plugin</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
