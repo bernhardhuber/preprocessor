@@ -23,10 +23,10 @@ import org.apache.maven.plugin.testing.WithoutMojo;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 
 /**
  *
@@ -73,6 +73,8 @@ public class InterpolatorMojoTest {
 
     /**
      * Test of execute method, of class InterpolationMojo.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testExecute() throws Exception {

@@ -27,6 +27,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 
 /**
+ * Merger using {@code org.codehaus.plexus.util.InterpolationFilterReader}.
  *
  * @author berni3
  */
@@ -37,27 +38,61 @@ class Interpolate {
 
     private final Map<String, String> templateValues = new HashMap<>();
 
+    /**
+     * Define begin, and end token.
+     *
+     * @param b
+     * @param e
+     * @return
+     */
     Interpolate beginTokenEndToken(String b, String e) {
         this.beginToken = b;
         this.endToken = e;
         return this;
     }
 
+    /**
+     * Add a key, value pair to model.
+     *
+     * @param k
+     * @param v
+     * @return
+     */
     Interpolate addKeyValue(String k, String v) {
         this.templateValues.put(k, v);
         return this;
     }
 
+    /**
+     * Add all key, value pairs of the map m to the model.
+     *
+     * @param m
+     * @return
+     */
     Interpolate addMapKeyValues(Map<String, String> m) {
         this.templateValues.putAll(m);
         return this;
     }
 
+    /**
+     * Add all key, value pairs of the properties to the model.
+     *
+     * @param properties
+     * @return
+     */
     Interpolate addProperties(Properties properties) {
         properties.forEach((Object k, Object v) -> this.templateValues.put((String) k, (String) v));
         return this;
     }
 
+    /**
+     * Merge infile with key-value model to outfile.
+     *
+     * @param infile
+     * @param outfile
+     * @throws
+     * org.huberb.template.interpolator.plugin.Interpolate.InterpolateException
+     */
     void merge(File infile, File outfile) throws InterpolateException {
         boolean infileValidate = infile.isFile();
         infileValidate = infileValidate && infile.canRead();
@@ -78,13 +113,16 @@ class Interpolate {
         }
     }
 
-    public static class InterpolateException extends Exception {
+    /**
+     * Wrapping Exception for Interpolate merging.
+     */
+    static class InterpolateException extends Exception {
 
-        public InterpolateException(String message) {
+        InterpolateException(String message) {
             super(message);
         }
 
-        public InterpolateException(String message, Throwable cause) {
+        InterpolateException(String message, Throwable cause) {
             super(message, cause);
         }
 

@@ -26,22 +26,12 @@ import org.apache.maven.model.FileSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
+ * Holder for configuration for {@link Interpolate}.
  *
  * @author berni3
  */
 public class InterpolatorConfiguration {
 
-    public static class ConfigurationException extends Exception {
-
-        public ConfigurationException(String message) {
-            super(message);
-        }
-
-        public ConfigurationException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-    }
     private FileSet templateFileSet;
     private Map<String, String> propertyMap;
     private String beginToken;
@@ -120,7 +110,13 @@ public class InterpolatorConfiguration {
         return this;
     }
 
-    //---
+    /**
+     * Validate the configuration.
+     *
+     * If configuration is invalid throw {@link ConfigurationException}.
+     *
+     * @throws ConfigurationException
+     */
     void validate() throws ConfigurationException {
         {
             boolean bBeginEndToken = true;
@@ -180,6 +176,22 @@ public class InterpolatorConfiguration {
 
     public String getRemoveExtension() {
         return removeExtension;
+    }
+
+    /**
+     * Wrapping exception for the configuration.
+     *
+     */
+    static class ConfigurationException extends Exception {
+
+        public ConfigurationException(String message) {
+            super(message);
+        }
+
+        public ConfigurationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
     }
 
 }

@@ -17,9 +17,9 @@ package org.huberb.template.interpolator.plugin;
 
 import java.io.File;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -40,6 +40,8 @@ public class InterpolatorConfigurationTest {
 
     /**
      * Test of validate method, of class InterpolatorConfiguration.
+     * 
+     * @throws org.huberb.template.interpolator.plugin.InterpolatorConfiguration.ConfigurationException
      */
     @Test
     public void testValidate() throws InterpolatorConfiguration.ConfigurationException {

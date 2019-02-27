@@ -15,8 +15,6 @@
  */
 package org.huberb.template.interpolator.plugin;
 
-import org.huberb.template.interpolator.support.FileScanner;
-import org.huberb.template.interpolator.support.FileCalculator;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -28,9 +26,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
 import org.huberb.template.interpolator.plugin.Interpolate.InterpolateException;
+import org.huberb.template.interpolator.support.FileCalculator;
 import org.huberb.template.interpolator.support.FileCalculator.InputFileOutputFilePair;
+import org.huberb.template.interpolator.support.FileScanner;
 
 /**
+ * Maven plugin for template processing using plexus-utils Interpolator.
  *
  * @author berni3
  */
@@ -56,8 +57,7 @@ public class InterpolatorMojo extends AbstractMojo {
     private File propertiesFile;
 
     /**
-     * Template values
-     *
+     * Template values.
      */
     @Parameter
     private Properties properties;
@@ -96,15 +96,18 @@ public class InterpolatorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         //---
+        // extract configuration from @Parameter
         final InterpolatorConfiguration configuration = createConfiguration();
         validateConfiguration(configuration);
         logConfiguration(configuration);
 
         //---
+        // calculate all input-files.
         final List<File> inputFiles = new FileScanner().setUpByFileSet(configuration.getTemplateFileSet()).scan();
         this.getLog().debug("inputFiles " + inputFiles);
 
         //---
+        // calculate for each input-file the appropriate output-file.
         final FileCalculator fileCalculator = new FileCalculator();
         final List<InputFileOutputFilePair> ifofpList = fileCalculator.calculateFromInputFiles(
                 configuration.getRemoveExtension(),
@@ -112,6 +115,7 @@ public class InterpolatorMojo extends AbstractMojo {
         this.getLog().debug("inputFileOutputFilePair " + ifofpList);
 
         //---
+        // process input-file to output-file
         for (InputFileOutputFilePair ifofp : ifofpList) {
             File infile = ifofp.getInputFile();
             File outfile = ifofp.getOutputFile();
@@ -130,7 +134,9 @@ public class InterpolatorMojo extends AbstractMojo {
     }
 
     InterpolatorConfiguration createConfiguration() throws MojoExecutionException {
-        InterpolatorConfiguration configuration = new InterpolatorConfiguration();
+
+        final InterpolatorConfiguration configuration = new InterpolatorConfiguration();
+
         try {
             configuration.baseDir(new File("."));
             if (this.templateFiles != null) {

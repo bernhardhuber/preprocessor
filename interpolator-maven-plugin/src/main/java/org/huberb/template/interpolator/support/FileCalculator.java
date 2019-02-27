@@ -26,6 +26,22 @@ import org.codehaus.plexus.util.FileUtils;
  */
 public class FileCalculator {
 
+    public List<InputFileOutputFilePair> calculateFromInputFiles(String suffix, List<File> inputFiles) {
+        final List<InputFileOutputFilePair> result = new ArrayList<>();
+        for (File inputFile : inputFiles) {
+            File normalizedInputFile = inputFile.getAbsoluteFile();
+            final String outputname = FileUtils.basename(normalizedInputFile.getAbsolutePath(), suffix);
+            final File inputFileParentFile = normalizedInputFile.getParentFile();
+
+            final InputFileOutputFilePair inputFileOutpuFilePair = new InputFileOutputFilePair(
+                    normalizedInputFile.getAbsoluteFile(),
+                    FileUtils.resolveFile(inputFileParentFile, outputname)
+            );
+            result.add(inputFileOutpuFilePair);
+        }
+        return result;
+    }
+
     public static class InputFileOutputFilePair {
 
         private final File inputFile;
@@ -49,22 +65,6 @@ public class FileCalculator {
             return "InputFileOutputFilePair{" + "inputFile=" + inputFile + ", outputFile=" + outputFile + '}';
         }
 
-    }
-
-    public List<InputFileOutputFilePair> calculateFromInputFiles(String suffix, List<File> inputFiles) {
-        final List<InputFileOutputFilePair> result = new ArrayList<>();
-        for (File inputFile : inputFiles) {
-            File normalizedInputFile = inputFile.getAbsoluteFile();
-            final String outputname = FileUtils.basename(normalizedInputFile.getAbsolutePath(), suffix);
-            final File inputFileParentFile = normalizedInputFile.getParentFile();
-
-            final InputFileOutputFilePair inputFileOutpuFilePair = new InputFileOutputFilePair(
-                    normalizedInputFile.getAbsoluteFile(),
-                    FileUtils.resolveFile(inputFileParentFile, outputname)
-            );
-            result.add(inputFileOutpuFilePair);
-        }
-        return result;
     }
 
 }
