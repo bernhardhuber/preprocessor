@@ -31,17 +31,6 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class HandlebarsConfiguration {
 
-    public static class ConfigurationException extends Exception {
-
-        public ConfigurationException(String message) {
-            super(message);
-        }
-
-        public ConfigurationException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-    }
     private FileSet templateFileSet;
     private Map<String, String> propertyMap;
     private String beginToken;
@@ -180,6 +169,17 @@ public class HandlebarsConfiguration {
 
     public String getRemoveExtension() {
         return removeExtension;
+    }
+    public static class ConfigurationException extends Exception {
+        
+        public ConfigurationException(String message) {
+            super(message);
+        }
+        
+        public ConfigurationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+        
     }
 
 }

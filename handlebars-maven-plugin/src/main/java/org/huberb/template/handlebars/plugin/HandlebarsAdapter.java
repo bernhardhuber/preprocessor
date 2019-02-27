@@ -115,7 +115,7 @@ class HandlebarsAdapter {
 
     }
 
-    public static class InterpolateException extends Exception {
+     static class InterpolateException extends Exception {
 
         public InterpolateException(String message) {
             super(message);
