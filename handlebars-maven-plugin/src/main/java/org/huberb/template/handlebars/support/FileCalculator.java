@@ -16,23 +16,43 @@
 package org.huberb.template.handlebars.support;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
+ * Calculate outputFiles for each given inputFile.
  *
  * @author berni3
  */
 public class FileCalculator {
 
     public List<InputFileOutputFilePair> calculateFromInputFiles(String suffix, List<File> inputFiles) {
+        final Set<File> processedInputFiles = new HashSet<>();
         final List<InputFileOutputFilePair> result = new ArrayList<>();
         for (File inputFile : inputFiles) {
-            File normalizedInputFile = inputFile.getAbsoluteFile();
+            //---
+            final File normalizedInputFile;
+            try {
+                normalizedInputFile = inputFile.getCanonicalFile();
+            } catch (IOException ex) {
+                continue;
+            }
+
+            //---
+            if (processedInputFiles.contains(normalizedInputFile)) {
+                continue;
+            } else {
+                processedInputFiles.add(normalizedInputFile);
+            }
+
             final String outputname = FileUtils.basename(normalizedInputFile.getAbsolutePath(), suffix);
             final File inputFileParentFile = normalizedInputFile.getParentFile();
 
+            //---
             final InputFileOutputFilePair inputFileOutpuFilePair = new InputFileOutputFilePair(
                     normalizedInputFile.getAbsoluteFile(),
                     FileUtils.resolveFile(inputFileParentFile, outputname)
@@ -42,6 +62,10 @@ public class FileCalculator {
         return result;
     }
 
+    /**
+     * Wrapping class for pair of inputFile, outputFile.
+     *
+     */
     public static class InputFileOutputFilePair {
 
         private final File inputFile;
@@ -62,9 +86,9 @@ public class FileCalculator {
 
         @Override
         public String toString() {
-            return "InputFileOutputFilePair{" + "inputFile=" + inputFile + ", outputFile=" + outputFile + '}';
+            return "InputFileOutputFilePair{"
+                    + "inputFile=" + inputFile + ", "
+                    + "outputFile=" + outputFile + '}';
         }
-
     }
-
 }
