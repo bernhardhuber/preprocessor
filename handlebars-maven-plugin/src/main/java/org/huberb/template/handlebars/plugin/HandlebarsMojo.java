@@ -22,6 +22,7 @@ import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
@@ -31,6 +32,7 @@ import org.huberb.template.handlebars.support.FileCalculator.InputFileOutputFile
 import org.huberb.template.handlebars.support.FileScanner;
 
 /**
+ * Maven plugin for template processing using handlebars.
  *
  * @author berni3
  */
@@ -102,21 +104,21 @@ public class HandlebarsMojo extends AbstractMojo {
 
         //---
         final List<File> inputFiles = new FileScanner().setUpByFileSet(configuration.getTemplateFileSet()).scan();
-        this.getLog().debug("inputFiles " + inputFiles);
+        logDebug("inputFiles " + inputFiles);
 
         //---
         final FileCalculator fileCalculator = new FileCalculator();
         final List<InputFileOutputFilePair> ifofpList = fileCalculator.calculateFromInputFiles(
                 configuration.getRemoveExtension(),
                 inputFiles);
-        this.getLog().debug("inputFileOutputFilePair " + ifofpList);
+        logDebug("inputFileOutputFilePair " + ifofpList);
 
         //---
         for (InputFileOutputFilePair ifofp : ifofpList) {
             File infile = ifofp.getInputFile();
             File outfile = ifofp.getOutputFile();
             try {
-                this.getLog().debug("interpolate " + infile + " -> " + outfile);
+                logDebug("interpolate " + infile + " -> " + outfile);
                 final HandlebarsAdapter interpolate = new HandlebarsAdapter().
                         beginTokenEndToken(
                                 configuration.getBeginToken(),
@@ -169,6 +171,66 @@ public class HandlebarsMojo extends AbstractMojo {
     }
 
     void logConfiguration(HandlebarsConfiguration configuration) {
-        this.getLog().debug("configuration: " + configuration.toLogString());
+        logDebug("configuration: " + configuration.toLogString());
+    }
+
+    void logDebug(String m, Object... args) {
+        new LogWrapper(this).log(LogWrapper.LogWrapperLevel.DEBUG, m, args);
+    }
+
+    //---
+    static class LogWrapper {
+
+        enum LogWrapperLevel {
+            DEBUG, INFO, WARN, ERROR
+        };
+        private final AbstractMojo abstractMojo;
+
+        public LogWrapper(AbstractMojo abstractMojo) {
+            this.abstractMojo = abstractMojo;
+        }
+
+        void log(LogWrapperLevel level, String m, Object... args) {
+            if (isEnabled(level)) {
+
+                final String formatted;
+                if (args == null || args.length == 0) {
+                    formatted = m;
+                } else {
+                    formatted = String.format(m, args);
+                }
+                logIt(level, formatted);
+            }
+        }
+
+        boolean isEnabled(LogWrapperLevel level) {
+            boolean enabled = false;
+            final Log log = abstractMojo.getLog();
+            enabled = enabled || (level == LogWrapperLevel.ERROR && log.isErrorEnabled());
+            enabled = enabled || (level == LogWrapperLevel.WARN && log.isWarnEnabled());
+
+            enabled = enabled || (level == LogWrapperLevel.INFO && log.isInfoEnabled());
+            enabled = enabled || (level == LogWrapperLevel.DEBUG && log.isDebugEnabled());
+            return enabled;
+        }
+
+        void logIt(LogWrapperLevel level, String formatted) {
+            final Log log = abstractMojo.getLog();
+            switch (level) {
+                case ERROR:
+                    log.debug(formatted);
+                    break;
+                case WARN:
+                    log.debug(formatted);
+                    break;
+                case INFO:
+                    log.debug(formatted);
+                    break;
+                case DEBUG:
+                    log.debug(formatted);
+                    break;
+            }
+
+        }
     }
 }

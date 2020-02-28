@@ -90,8 +90,7 @@ class Interpolate {
      *
      * @param infile
      * @param outfile
-     * @throws
-     * org.huberb.template.interpolator.plugin.Interpolate.InterpolateException
+     * @throws InterpolateException
      */
     void merge(File infile, File outfile) throws InterpolateException {
         boolean infileValidate = infile.isFile();

@@ -31,7 +31,8 @@ import java.util.Properties;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
- *
+ * Adapter for invoking  Handlebars/Termplate.
+ * 
  * @author berni3
  */
 class HandlebarsAdapter {
@@ -73,13 +74,13 @@ class HandlebarsAdapter {
             throw new InterpolateException("outfile " + outfile + " is not valid");
         }
         try (FileWriter outfileWriter = new FileWriter(outfile)) {
-            Map m = templateValues;
-            Handlebars handlebars = new Handlebars();
+            final Map m = templateValues;
+            final Handlebars handlebars = new Handlebars();
             handlebars.setStartDelimiter(beginToken);
             handlebars.setEndDelimiter(endToken);
 
-            Template template = handlebars.compile(new FileTemplateSource(infile));
-            Context context = Context.newBuilder(m).resolver(MapValueResolver.INSTANCE).build();
+            final Template template = handlebars.compile(new FileTemplateSource(infile));
+            final Context context = Context.newBuilder(m).resolver(MapValueResolver.INSTANCE).build();
             template.apply(context, outfileWriter);
         } catch (IOException ioex) {
             throw new InterpolateException("merge", ioex);
@@ -115,7 +116,7 @@ class HandlebarsAdapter {
 
     }
 
-     static class InterpolateException extends Exception {
+    static class InterpolateException extends Exception {
 
         public InterpolateException(String message) {
             super(message);

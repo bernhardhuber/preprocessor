@@ -44,14 +44,14 @@ public class HandlebarsTest {
     }
 
     @Test
-    public void hello() throws IOException {
+    public void testHello() throws IOException {
         Handlebars handlebars = new Handlebars();
         Template template = handlebars.compileInline("Hello, {{this}}");
         assertEquals("Hello, Handlebars.java", template.apply("Handlebars.java"));
     }
 
     @Test
-    public void hello2() throws IOException {
+    public void testResolvingProperties() throws IOException {
         Handlebars handlebars = new Handlebars();
         Template template = handlebars.compileInline("{{ma}} + {{mb}}");
         Properties props = new Properties();
