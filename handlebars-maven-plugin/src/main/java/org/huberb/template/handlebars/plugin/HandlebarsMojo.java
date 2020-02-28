@@ -100,7 +100,8 @@ public class HandlebarsMojo extends AbstractMojo {
         //---
         final HandlebarsConfiguration configuration = createConfiguration();
         validateConfiguration(configuration);
-        logConfiguration(configuration);
+        logDebug("configuration: " + configuration.toLogString());
+        
 
         //---
         final List<File> inputFiles = new FileScanner().setUpByFileSet(configuration.getTemplateFileSet()).scan();
@@ -132,7 +133,7 @@ public class HandlebarsMojo extends AbstractMojo {
     }
 
     HandlebarsConfiguration createConfiguration() throws MojoExecutionException {
-        HandlebarsConfiguration configuration = new HandlebarsConfiguration();
+      final  HandlebarsConfiguration configuration = new HandlebarsConfiguration();
         try {
             configuration.baseDir(new File("."));
             if (this.templateFiles != null) {
@@ -169,11 +170,7 @@ public class HandlebarsMojo extends AbstractMojo {
             throw new MojoExecutionException("validate configuration", ex);
         }
     }
-
-    void logConfiguration(HandlebarsConfiguration configuration) {
-        logDebug("configuration: " + configuration.toLogString());
-    }
-
+ 
     void logDebug(String m, Object... args) {
         new LogWrapper(this).log(LogWrapper.LogWrapperLevel.DEBUG, m, args);
     }

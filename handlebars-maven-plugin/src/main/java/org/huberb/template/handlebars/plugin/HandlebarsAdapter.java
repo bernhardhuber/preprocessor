@@ -63,6 +63,13 @@ class HandlebarsAdapter {
         return this;
     }
 
+    /**
+     * Entry for merging infile to outfile using {@link Handlebars}.
+     * 
+     * @param infile
+     * @param outfile
+     * @throws InterpolateException 
+     */
     void merge(File infile, File outfile) throws InterpolateException {
         boolean infileValidate = infile.isFile();
         infileValidate = infileValidate && infile.canRead();
@@ -89,7 +96,7 @@ class HandlebarsAdapter {
 
     static class FileTemplateSource implements TemplateSource {
 
-        private File f;
+        private final File f;
 
         public FileTemplateSource(File f) {
             this.f = f;

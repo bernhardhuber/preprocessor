@@ -26,13 +26,14 @@ import org.apache.maven.model.FileSet;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- *
+ * Encapsulation for maven configurations.
+ * 
  * @author berni3
  */
 public class HandlebarsConfiguration {
 
     private FileSet templateFileSet;
-    private Map<String, String> propertyMap;
+    private final Map<String, String> propertyMap;
     private String beginToken;
     private String endToken;
     private String removeExtension;
@@ -46,8 +47,8 @@ public class HandlebarsConfiguration {
         Properties props = new Properties();
         try {
             props.load(new FileReader(propertyFile));
-        } catch (IOException ex) {
-            throw new ConfigurationException("loading properties file " + propertyFile, ex);
+        } catch (IOException ioex) {
+            throw new ConfigurationException("loading properties file " + propertyFile, ioex);
         }
         this.properties(props);
 
@@ -109,7 +110,10 @@ public class HandlebarsConfiguration {
         return this;
     }
 
-    //---
+    /**
+     * validate configuration
+     * @throws ConfigurationException 
+     */
     void validate() throws ConfigurationException {
         {
             boolean bBeginEndToken = true;
@@ -170,7 +174,11 @@ public class HandlebarsConfiguration {
     public String getRemoveExtension() {
         return removeExtension;
     }
-    public static class ConfigurationException extends Exception {
+    
+    /**
+     * Wrapper exception, thrown if configuration is bad.
+     */
+    static class ConfigurationException extends Exception {
         
         public ConfigurationException(String message) {
             super(message);
