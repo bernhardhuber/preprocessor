@@ -1,0 +1,50 @@
+@startuml
+[org.huberb.template:interpolator-maven-plugin:maven-plugin:1.0-SNAPSHOT] -up-> [org.apache.maven:maven-plugin-api:jar:3.2.5:compile]
+[org.huberb.template:interpolator-maven-plugin:maven-plugin:1.0-SNAPSHOT] ..> [org.apache.maven:maven-model:jar:3.2.5:compile]
+[org.huberb.template:interpolator-maven-plugin:maven-plugin:1.0-SNAPSHOT] ..> [org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.3:provided]
+[org.huberb.template:interpolator-maven-plugin:maven-plugin:1.0-SNAPSHOT] -up-> [org.codehaus.plexus:plexus-interpolation:jar:1.25:compile]
+
+/'
+org.huberb.template:interpolator-maven-plugin:maven-plugin:1.0-SNAPSHOT
++- org.apache.maven:maven-plugin-api:jar:3.2.5:compile
+|  +- org.apache.maven:maven-artifact:jar:3.2.5:compile
+|  \- org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.0.M1:compile
+|     +- javax.enterprise:cdi-api:jar:1.0:compile
+|     |  \- javax.annotation:jsr250-api:jar:1.0:compile
+|     \- org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.0.M1:compile
++- org.apache.maven:maven-model:jar:3.2.5:compile
+|  \- org.codehaus.plexus:plexus-utils:jar:3.0.20:compile
++- org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.3:provided
++- org.codehaus.plexus:plexus-interpolation:jar:1.25:compile
++- junit:junit:jar:4.12:test
+|  \- org.hamcrest:hamcrest-core:jar:1.3:test
++- org.slf4j:slf4j-simple:jar:1.7.25:test
+|  \- org.slf4j:slf4j-api:jar:1.7.25:test
++- org.apache.maven.plugin-testing:maven-plugin-testing-harness:jar:3.3.0:test
+|  +- commons-io:commons-io:jar:2.2:test
+|  \- org.codehaus.plexus:plexus-archiver:jar:2.2:test
+|     +- org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:test
+|     |  \- classworlds:classworlds:jar:1.1-alpha-2:test
+|     \- org.codehaus.plexus:plexus-io:jar:2.0.4:test
++- org.apache.maven:maven-compat:jar:3.2.5:test
+|  +- org.apache.maven:maven-model-builder:jar:3.2.5:test
+|  +- org.apache.maven:maven-settings:jar:3.2.5:test
+|  +- org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+|  \- org.apache.maven.wagon:wagon-provider-api:jar:2.8:test
++- org.apache.maven:maven-core:jar:3.2.5:test
+|  +- org.apache.maven:maven-settings-builder:jar:3.2.5:test
+|  +- org.apache.maven:maven-repository-metadata:jar:3.2.5:test
+|  +- org.eclipse.aether:aether-impl:jar:1.0.0.v20140518:test
+|  +- org.eclipse.aether:aether-api:jar:1.0.0.v20140518:test
+|  +- org.eclipse.aether:aether-util:jar:1.0.0.v20140518:test
+|  +- org.sonatype.sisu:sisu-guice:jar:no_aop:3.2.3:test
+|  |  +- javax.inject:javax.inject:jar:1:compile
+|  |  +- aopalliance:aopalliance:jar:1.0:test
+|  |  \- com.google.guava:guava:jar:16.0.1:test
+|  +- org.codehaus.plexus:plexus-classworlds:jar:2.5.2:compile
+|  \- org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:test
+|     \- org.sonatype.plexus:plexus-cipher:jar:1.4:test
+\- org.apache.maven:maven-aether-provider:jar:3.2.5:test
+   \- org.eclipse.aether:aether-spi:jar:1.0.0.v20140518:test
+'/
+@enduml
